@@ -19,41 +19,17 @@ class CountryListFragment : Fragment(R.layout.activity_main) {
 
     private val viewModel: CountryListViewModel by viewModels()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View = ComposeView(requireContext()).apply {
-//        setContent {
-//            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-//            OrbitTheme {
-//                CountryListScreen(viewModel)
-//            }
-//        }
-//    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.observe(
-            lifecycleOwner = this,
-            state = { state ->
-                handleProgress(state.isProgress)
-                handleItems(state.items)
-            },
-            sideEffect = { effect ->
-                when (effect) {
-                    is CountryListSideEffect.ShowNameOfCountryDialog -> showDialog()
-                }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            OrbitTheme {
+                CountryListScreen(viewModel)
             }
-        )
-    }
-
-    private fun handleProgress(progress: Boolean) {
-        TODO("Not yet implemented")
-    }
-
-    private fun handleItems(items: List<CountryItem>) {
-        binding.rv.adapter.items = items
+        }
     }
 
 }
