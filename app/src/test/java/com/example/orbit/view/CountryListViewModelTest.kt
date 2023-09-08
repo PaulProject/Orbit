@@ -1,8 +1,13 @@
 package com.example.orbit.view
 
 import com.example.orbit.business.usecase.IGetCountryListUseCase
-import com.example.orbit.data.response.CountryResponse
-import com.example.orbit.view.converter.ICountryListConverter
+import com.example.orbit.data.response.CountryListResponse
+import com.example.orbit.navigation.AppScreen
+import com.example.orbit.view.list.CountryListSideEffect
+import com.example.orbit.view.list.CountryListState
+import com.example.orbit.view.list.CountryListViewModel
+import com.example.orbit.view.list.converter.ICountryListConverter
+import com.github.terrakok.cicerone.Router
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -10,10 +15,11 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.excludeRecords
 import io.mockk.impl.annotations.MockK
+import io.mockk.justRun
+import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Before
@@ -30,12 +36,17 @@ class CountryListViewModelTest {
     @MockK
     lateinit var countryListConverter: ICountryListConverter
 
+    @MockK
+    lateinit var router: Router
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        mockkObject(AppScreen)
         viewModel = CountryListViewModel(
             getCountryList = getCountryList,
-            countryListConverter = countryListConverter
+            countryListConverter = countryListConverter,
+            router = router
         )
     }
 
@@ -44,18 +55,19 @@ class CountryListViewModelTest {
         confirmVerified(
             getCountryList,
             countryListConverter,
+            router
         )
     }
 
     @Test
-    fun onViewReady_isSuccess() = runTest {
+    fun getCountryList_isSuccess() = runTest {
         // mock
         val state = CountryListState()
         val response = listOf(
-            CountryResponse()
+            CountryListResponse()
         )
         val result = listOf(
-            com.example.orbit.view.item.CountryItem()
+            com.example.orbit.view.list.item.CountryListItem()
         )
         coEvery { getCountryList() } returns response
         every { countryListConverter.convert(response) } returns result
@@ -77,7 +89,7 @@ class CountryListViewModelTest {
     }
 
     @Test
-    fun onViewReady_isError() = runTest {
+    fun getCountryList_isError() = runTest {
         // mock
         val state = CountryListState()
         val error = RuntimeException()
@@ -99,28 +111,40 @@ class CountryListViewModelTest {
     }
 
     @Test
-    fun onCountryClick() = runTest {
+    fun onCountryClick_whenCode_isNotNull() = runTest {
         // mock
         val state = CountryListState()
-        val item = com.example.orbit.view.item.CountryItem(
+        val item = com.example.orbit.view.list.item.CountryListItem(
             name = "name",
-            image = "image"
+            image = "image",
+            code = "code"
         )
+        justRun { router.navigateTo(AppScreen.CountryDetailFragment("code", "name")) }
 
         // action
         val testSubject = viewModel.test(state)
         testSubject.testIntent { onCountryClick(item) }
 
         // verify
-        testSubject.assert(state) {
-            postedSideEffects(
-                CountryListSideEffect.ShowNameOfCountryDialog("name"),
-            )
-        }
+        verify { router.navigateTo(AppScreen.CountryDetailFragment("code", "name")) }
     }
 
     @Test
-    fun onRetry() = runTest{
+    fun onCountryClick_whenCode_isNull() = runTest {
+        // mock
+        val state = CountryListState()
+        val item = com.example.orbit.view.list.item.CountryListItem(
+            name = "name",
+            image = "image",
+        )
+
+        // action & verify
+        val testSubject = viewModel.test(state)
+        testSubject.testIntent { onCountryClick(item) }
+    }
+
+    @Test
+    fun onRetry() = runTest {
         // mock
         val state = CountryListState()
         viewModel = spyk(viewModel) {

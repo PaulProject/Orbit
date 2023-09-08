@@ -1,4 +1,4 @@
-package com.example.orbit.view
+package com.example.orbit.view.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,18 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.example.orbit.R
 import com.example.orbit.ui.theme.OrbitTheme
-import com.example.orbit.view.item.CountryItem
+import com.example.orbit.view.detail.arg.CountryDetailArg
 import dagger.hilt.android.AndroidEntryPoint
-import org.orbitmvi.orbit.viewmodel.observe
 
 @AndroidEntryPoint
-class CountryListFragment : Fragment(R.layout.activity_main) {
+class CountryDetailFragment : Fragment() {
 
-    private val viewModel: CountryListViewModel by viewModels()
+    companion object {
+        fun newInstance(arg: CountryDetailArg): Fragment =
+            CountryDetailFragment().apply {
+                arguments = bundleOf(CountryDetailViewModel.ARG_COUNTRY_DETAIL to arg)
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +30,7 @@ class CountryListFragment : Fragment(R.layout.activity_main) {
         setContent {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             OrbitTheme {
-                CountryListScreen(viewModel)
+                CountryDetailScreen()
             }
         }
     }
