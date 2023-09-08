@@ -1,12 +1,16 @@
 package com.example.orbit.di
 
+import com.example.orbit.business.usecase.GetCountryDetailUseCase
 import com.example.orbit.business.usecase.GetCountryListUseCase
+import com.example.orbit.business.usecase.IGetCountryDetailUseCase
 import com.example.orbit.business.usecase.IGetCountryListUseCase
 import com.example.orbit.data.repository.CountryRepository
 import com.example.orbit.data.repository.ICountryRepository
 import com.example.orbit.data.service.CountryService
-import com.example.orbit.view.converter.CountryListConverter
-import com.example.orbit.view.converter.ICountryListConverter
+import com.example.orbit.view.detail.converter.CountryDetailConverter
+import com.example.orbit.view.detail.converter.ICountryDetailConverter
+import com.example.orbit.view.list.converter.CountryListConverter
+import com.example.orbit.view.list.converter.ICountryListConverter
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,7 +33,15 @@ internal interface CountryBindModule {
 
     @Singleton
     @Binds
+    fun bindGetCountryDetailUseCase(impl: GetCountryDetailUseCase): IGetCountryDetailUseCase
+
+    @Singleton
+    @Binds
     fun bindCountryListConverter(impl: CountryListConverter): ICountryListConverter
+
+    @Singleton
+    @Binds
+    fun bindCountryDetailConverter(impl: CountryDetailConverter): ICountryDetailConverter
 
 }
 

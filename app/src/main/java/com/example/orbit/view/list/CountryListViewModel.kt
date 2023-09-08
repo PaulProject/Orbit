@@ -1,19 +1,19 @@
-package com.example.orbit.view
+package com.example.orbit.view.list
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.orbit.business.usecase.IGetCountryListUseCase
 import com.example.orbit.extension.RequestAction
 import com.example.orbit.extension.createContainer
 import com.example.orbit.extension.request
-import com.example.orbit.view.converter.ICountryListConverter
-import com.example.orbit.view.item.CountryItem
+import com.example.orbit.navigation.AppScreen
+import com.example.orbit.view.list.converter.ICountryListConverter
+import com.example.orbit.view.list.item.CountryListItem
+import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import javax.inject.Inject
 
@@ -21,6 +21,7 @@ import javax.inject.Inject
 class CountryListViewModel @Inject constructor(
     private val getCountryList: IGetCountryListUseCase,
     private val countryListConverter: ICountryListConverter,
+    private val router: Router,
 ) : ViewModel(), ContainerHost<CountryListState, CountryListSideEffect> {
 
     override val container: Container<CountryListState, CountryListSideEffect> =
@@ -55,8 +56,14 @@ class CountryListViewModel @Inject constructor(
         }
     }
 
-    fun onCountryClick(item: CountryItem) = intent {
-        postSideEffect(CountryListSideEffect.ShowNameOfCountryDialog(item.name))
+    fun onCountryClick(item: CountryListItem) = intent {
+        item.code?.let { code ->
+            router.navigateTo(
+                AppScreen.CountryDetailFragment(
+                    code = code, name = item.name
+                )
+            )
+        }
     }
 
     fun onRetry() = intent {

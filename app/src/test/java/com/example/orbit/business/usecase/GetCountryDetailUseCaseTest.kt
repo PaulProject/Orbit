@@ -1,7 +1,8 @@
-package com.example.orbit.data.repository
+package com.example.orbit.business.usecase
 
+import com.example.orbit.data.repository.ICountryRepository
+import com.example.orbit.data.response.CountryDetailResponse
 import com.example.orbit.data.response.CountryListResponse
-import com.example.orbit.data.service.CountryService
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -11,52 +12,54 @@ import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.coInvoking
 import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldThrow
+import org.junit.Assert.*
+
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.lang.RuntimeException
 
-class CountryRepositoryTest {
+class GetCountryDetailUseCaseTest {
 
-    private lateinit var repository: CountryRepository
+    private lateinit var useCase: GetCountryDetailUseCase
 
     @MockK
-    lateinit var service: CountryService
+    lateinit var repository: ICountryRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        repository = CountryRepository(
-            service = service
+        useCase = GetCountryDetailUseCase(
+            repository = repository
         )
     }
 
     @After
     fun tearDown() {
-        confirmVerified(service)
+        confirmVerified(repository)
     }
 
     @Test
     fun getCountryList_isSuccess() = runTest {
         // mock
-        val result = listOf<CountryListResponse>()
-        coEvery { repository.getCountryList() } returns result
+        val result = CountryDetailResponse()
+        coEvery { useCase("code") } returns result
 
         // action
-        repository.getCountryList() shouldBe result
+        useCase("code") shouldBe result
 
         // verify
-        coVerify { repository.getCountryList() }
+        coVerify { useCase("code") }
     }
 
     @Test
     fun getCountryList_isError() = runTest {
         // mock
         val error = RuntimeException()
-        coEvery { repository.getCountryList() } throws error
+        coEvery { useCase("code") } throws error
 
         // action & verify
-        coInvoking { repository.getCountryList() } shouldThrow error
-        coVerify { repository.getCountryList() }
+        coInvoking { useCase("code") } shouldThrow error
+        coVerify { useCase("code") }
     }
+
 }

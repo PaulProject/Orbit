@@ -1,11 +1,16 @@
 package com.example.orbit.data.service
 
-import com.example.orbit.data.response.CountryResponse
+import com.example.orbit.data.response.CountryDetailResponse
+import com.example.orbit.data.response.CountryListResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface CountryService {
 
-    @GET("country-flag-emoji-json@2.0.0/dist/index.json")
-    suspend fun getCountryList(): List<CountryResponse>
+    @GET("all?fields=flags,name,cca2")
+    suspend fun getCountryList(): List<CountryListResponse>
+
+    @GET("alpha/{code}")
+    suspend fun getCountryDetail(@Path("code") code: String): CountryDetailResponse
 
 }

@@ -1,7 +1,7 @@
 package com.example.orbit.business.usecase
 
 import com.example.orbit.data.repository.ICountryRepository
-import com.example.orbit.data.response.CountryResponse
+import com.example.orbit.data.response.CountryListResponse
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,7 +38,7 @@ class GetCountryListUseCaseTest {
     @Test
     fun getCountryList_isSuccess() = runTest {
         // mock
-        val result = listOf<CountryResponse>()
+        val result = listOf<CountryListResponse>()
         coEvery { useCase() } returns result
 
         // action
