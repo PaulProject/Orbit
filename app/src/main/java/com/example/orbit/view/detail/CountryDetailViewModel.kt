@@ -4,9 +4,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.orbit.business.usecase.IGetCountryDetailUseCase
-import com.example.orbit.extension.RequestAction
-import com.example.orbit.extension.createContainer
-import com.example.orbit.extension.request
+import com.example.orbit.core.extension.RequestAction
+import com.example.orbit.core.extension.createContainer
+import com.example.orbit.core.extension.request
 import com.example.orbit.view.detail.arg.CountryDetailArg
 import com.example.orbit.view.detail.converter.ICountryDetailConverter
 import com.github.terrakok.cicerone.Router

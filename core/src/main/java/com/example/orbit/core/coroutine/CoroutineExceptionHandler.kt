@@ -1,4 +1,4 @@
-package com.example.orbit.coroutine
+package com.example.orbit.core.coroutine
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
