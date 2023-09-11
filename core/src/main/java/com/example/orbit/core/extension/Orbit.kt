@@ -1,9 +1,8 @@
-package com.example.orbit.extension
+package com.example.orbit.core.extension
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.orbit.coroutine.CoroutineExceptionHandler
+import com.example.orbit.core.coroutine.CoroutineExceptionHandler
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.viewmodel.container

@@ -3,9 +3,9 @@ package com.example.orbit.view.list
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import com.example.orbit.business.usecase.IGetCountryListUseCase
-import com.example.orbit.extension.RequestAction
-import com.example.orbit.extension.createContainer
-import com.example.orbit.extension.request
+import com.example.orbit.core.extension.RequestAction
+import com.example.orbit.core.extension.createContainer
+import com.example.orbit.core.extension.request
 import com.example.orbit.navigation.AppScreen
 import com.example.orbit.view.list.converter.ICountryListConverter
 import com.example.orbit.view.list.item.CountryListItem

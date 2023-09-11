@@ -1,4 +1,4 @@
-package com.example.orbit.di
+package com.example.orbit.core.di
 
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.NavigatorHolder

@@ -1,4 +1,4 @@
-package com.example.orbit.extension
+package com.example.orbit.core.extension
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
