@@ -16,3 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "Orbit"
 include(":app")
 include(":core")
+include(":design")
+include(":country")
+include(":country-api")
